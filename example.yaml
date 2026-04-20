@@ -36,7 +36,7 @@ captive_portal:
 bluetooth_proxy:
 
 remote_transmitter:
-  pin: GPIO4
+  pin: GPIO7
   carrier_duty_percent: 50%
 
 remote_receiver:
@@ -48,7 +48,7 @@ remote_receiver:
 
 climate:
   - platform: lg_climate
-    name: "LG AC"
+    name: "Sai's Room - LG AC"
     # Optional timing overrides:
     # header_high: 8000
     # header_low: 4000
