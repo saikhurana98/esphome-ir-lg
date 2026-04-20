@@ -40,6 +40,7 @@ remote_transmitter:
   carrier_duty_percent: 50%
 
 remote_receiver:
+  id: ir_receiver
   pin:
     number: GPIO10
     inverted: true
@@ -49,6 +50,7 @@ remote_receiver:
 climate:
   - platform: lg_climate
     name: "Sai's Room - LG AC"
+    receiver_id: ir_receiver
     # Optional timing overrides:
     # header_high: 8000
     # header_low: 4000
