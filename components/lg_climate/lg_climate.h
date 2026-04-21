@@ -7,35 +7,30 @@ namespace lg_climate {
 
 // LG IR protocol constants
 static const uint32_t LG_PREAMBLE = 0x88;
-static const uint32_t LG_COMMAND_OFF = 0xC0000;
-static const uint32_t LG_COMMAND_SWING = 0x10000;
-static const uint32_t LG_COMMAND_BOOST = 0x100DE;
 
-// Power level commands (raw 28-bit values)
+// Special commands (full 28-bit raw values, pre-checksummed)
+static const uint32_t LG_CMD_OFF = 0x88C0051;
+static const uint32_t LG_CMD_BOOST = 0x88100DE;
+static const uint32_t LG_CMD_LIGHT = 0x88C00A6;
+static const uint32_t LG_CMD_SWING = 0x8810001;
 static const uint32_t LG_POWER_100 = 0x88C07F2;
 static const uint32_t LG_POWER_80 = 0x88C07D0;
 static const uint32_t LG_POWER_60 = 0x88C07E1;
 static const uint32_t LG_POWER_40 = 0x88C0804;
 
-// Mode commands when turning ON (from OFF state)
-static const uint32_t LG_MODE_COOL_ON = 0x00000;
-static const uint32_t LG_MODE_DRY_ON = 0x01000;
-static const uint32_t LG_MODE_FAN_ON = 0x02000;
-static const uint32_t LG_MODE_AUTO_ON = 0x03000;
+// Mode values (3-bit, bits 14-12)
+static const uint8_t LG_MODE_COOL = 0;
+static const uint8_t LG_MODE_DRY = 1;
+static const uint8_t LG_MODE_FAN = 2;
+static const uint8_t LG_MODE_AUTO = 3;
 
-// Mode commands when switching (already ON)
-static const uint32_t LG_MODE_COOL_SW = 0x08000;
-static const uint32_t LG_MODE_DRY_SW = 0x09000;
-static const uint32_t LG_MODE_FAN_SW = 0x0A000;
-static const uint32_t LG_MODE_AUTO_SW = 0x0B000;
-
-// Fan speed nibble values (bits 7-4)
-static const uint8_t LG_FAN_QUIET = 0x00;
-static const uint8_t LG_FAN_LOW = 0x90;
-static const uint8_t LG_FAN_MEDIUM = 0x20;
-static const uint8_t LG_FAN_HIGH = 0xA0;
-static const uint8_t LG_FAN_AUTO = 0x50;
-static const uint8_t LG_FAN_MAX = 0x40;
+// Fan speed values (4-bit nibble, bits 7-4)
+static const uint8_t LG_FAN_LOWEST = 0;
+static const uint8_t LG_FAN_LOW = 9;
+static const uint8_t LG_FAN_MEDIUM = 2;
+static const uint8_t LG_FAN_HIGH = 10;
+static const uint8_t LG_FAN_MAX = 4;
+static const uint8_t LG_FAN_AUTO = 5;
 
 class LGClimate : public climate_ir::ClimateIR {
  public:
@@ -64,15 +59,17 @@ class LGClimate : public climate_ir::ClimateIR {
   uint8_t calc_checksum_(uint32_t value);
   uint32_t build_command_();
 
-  uint32_t header_high_{8000};
-  uint32_t header_low_{4000};
-  uint32_t bit_high_{600};
-  uint32_t bit_one_low_{1600};
-  uint32_t bit_zero_low_{550};
+  // LG2 protocol timing defaults (from real AKB75215403 remote capture)
+  uint32_t header_high_{3200};
+  uint32_t header_low_{9900};
+  uint32_t bit_high_{500};
+  uint32_t bit_one_low_{1550};
+  uint32_t bit_zero_low_{520};
 
   bool power_on_{false};
   bool send_swing_{false};
   bool send_boost_{false};
+  bool send_light_{false};
   std::string pending_power_preset_{};
 };
 

@@ -16,11 +16,11 @@ CONF_BIT_ZERO_LOW = "bit_zero_low"
 
 CONFIG_SCHEMA = climate_ir.climate_ir_with_receiver_schema(LGClimate).extend(
     {
-        cv.Optional(CONF_HEADER_HIGH, default=8000): cv.uint32_t,
-        cv.Optional(CONF_HEADER_LOW, default=4000): cv.uint32_t,
-        cv.Optional(CONF_BIT_HIGH, default=600): cv.uint32_t,
-        cv.Optional(CONF_BIT_ONE_LOW, default=1600): cv.uint32_t,
-        cv.Optional(CONF_BIT_ZERO_LOW, default=550): cv.uint32_t,
+        cv.Optional(CONF_HEADER_HIGH, default=3200): cv.uint32_t,
+        cv.Optional(CONF_HEADER_LOW, default=9900): cv.uint32_t,
+        cv.Optional(CONF_BIT_HIGH, default=500): cv.uint32_t,
+        cv.Optional(CONF_BIT_ONE_LOW, default=1550): cv.uint32_t,
+        cv.Optional(CONF_BIT_ZERO_LOW, default=520): cv.uint32_t,
     }
 )
 
