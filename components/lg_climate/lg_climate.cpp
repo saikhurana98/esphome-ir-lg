@@ -347,14 +347,14 @@ bool LGClimate::on_receive(remote_base::RemoteReceiveData data) {
     this->power_on_ = false;
     this->swing_mode = climate::CLIMATE_SWING_OFF;
     this->preset.reset();
-    this->custom_preset.reset();
+    // Keep custom_preset (power mode) — it persists across on/off
     this->publish_state();
     return true;
   }
 
   // Decode normal command
   this->preset.reset();
-  this->custom_preset.reset();
+  // Keep custom_preset (power mode) — only reset when a new one is received
 
   // Bits 14-12: Mode
   uint8_t mode_val = (value >> 12) & 0x7;
